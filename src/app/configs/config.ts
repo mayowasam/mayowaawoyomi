@@ -1,5 +1,5 @@
 // Site config
-const SITE_URL = "https://mayowaawoyomi.com"; // Update with your actual domain
+const SITE_URL = "https://mayowaawoyomi.vercel.app"; // Update with your actual domain
 const SITE_NAME = "Mayowa Awoyomi";
 const SITE_DESCRIPTION = "Software Engineer based in the UK. Building scalable systems and creating unique digital experiences.";
 
