@@ -1,24 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Clock from "./Clock";
 import { RESUME_URL } from "../configs/config";
+import { ThemeToggle } from "./ThemeToggle";
 
 export default function Navbar() {
     const [openNav, setOpenNav] = useState(false);
+    const pathname = usePathname();
+
+    const isActive = (path: string) => pathname === path;
+
+    useEffect(() => {
+        if (openNav) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [openNav]);
 
     return (
         <header className="relative z-50">
-            <nav className="fixed w-full top-0 z-30 flex items-center justify-between p-4 md:px-12 border-b border-transparent transition-colors duration-300">
-
+            <nav
+                className="fixed w-full top-0 z-30 flex items-center justify-between p-4 md:px-12 border-b border-transparent transition-colors duration-300"
+                role="navigation"
+                aria-label="Main navigation"
+            >
                 {/* Logo */}
-                <a href="/" className="flex items-center">
+                <a href="/" className="flex items-center" aria-label="Mayowa Awoyomi - Home">
                     <svg
                         width="50"
                         height="30"
                         viewBox="0 0 63 21"
                         fill="currentColor"
-                        className="text-white dark:text-white"
+                        className="text-black dark:text-white"
                         xmlns="http://www.w3.org/2000/svg"
                     >
                         <path d="M15.53 7.11L5.96 10.5L15.53 13.89V18.27L0.74 12.81V8.19L15.53 2.73V7.11ZM62.4343 8.19V12.81L47.6443 18.27V13.89L57.2143 10.5L47.6443 7.11V2.73L62.4343 8.19Z" />
@@ -39,22 +58,37 @@ export default function Navbar() {
                             9.55739L57.2143 10.5ZM47.6443 7.11H46.6443V7.81665L47.3104 8.05261L47.6443 7.11ZM47.6443 2.73L47.9906 1.79188L46.6443 1.29486V2.73H47.6443ZM61.4343 8.19V12.81H63.4343V8.19H61.4343ZM62.088 11.8719L47.298 17.3319L47.9906 19.2081L62.7806 13.7481L62.088 11.8719ZM48.6443 
                             18.27V13.89H46.6443V18.27H48.6443ZM47.9782 14.8326L57.5482 11.4426L56.8804 9.55739L47.3104 12.9474L47.9782 14.8326ZM57.5482 9.55739L47.9782 6.16739L47.3104 8.05261L56.8804 11.4426L57.5482 9.55739ZM48.6443 7.11V2.73H46.6443V7.11H48.6443ZM47.298 3.66812L62.088 9.12811L62.7806 
                             7.25188L47.9906 1.79188L47.298 3.66812Z" fill="currentColor"
-                            className="fill-white stroke-white dark:fill-current  dark:stroke-current"
+                            className="fill-black stroke-black dark:fill-white dark:stroke-white"
                         />
 
                     </svg>
                 </a>
 
                 {/* Desktop Menu */}
-                <ul className="hidden md:flex gap-10 uppercase font-bold text-lg text-white">
+                <ul className="hidden md:flex gap-10 uppercase font-bold text-lg text-black dark:text-white items-center">
                     <li>
-                        <a href="about" className="hover:text-yellow-500 transition-colors">About</a>
+                        <a
+                            href="/about"
+                            className={`transition-colors ${isActive("/about") ? "text-yellow-500" : "hover:text-yellow-500"}`}
+                            aria-current={isActive("/about") ? "page" : undefined}
+                        >
+                            About
+                        </a>
                     </li>
                     <li>
-                        <a href="contact" className="hover:text-yellow-500 transition-colors">Contact</a>
+                        <a
+                            href="/contact"
+                            className={`transition-colors ${isActive("/contact") ? "text-yellow-500" : "hover:text-yellow-500"}`}
+                            aria-current={isActive("/contact") ? "page" : undefined}
+                        >
+                            Contact
+                        </a>
                     </li>
                     <li>
                         <Clock />
+                    </li>
+                    <li>
+                        <ThemeToggle />
                     </li>
                 </ul>
 
@@ -69,51 +103,91 @@ export default function Navbar() {
                 {/* Mobile Hamburger */}
                 <button
                     onClick={() => setOpenNav(!openNav)}
-                    className="relative z-40 flex h-8 w-8 flex-col justify-between lg:hidden focus:outline-none"
+                    className="relative z-40 flex h-8 w-8 flex-col justify-between md:hidden focus:outline-none"
+                    aria-label={openNav ? "Close menu" : "Open menu"}
+                    aria-expanded={openNav}
+                    aria-controls="mobile-menu"
                 >
                     <span
-                        className={`block h-1 w-8 rounded bg-white transition-transform duration-300 ${openNav ? "rotate-45 translate-y-3" : ""
-                            }`}
+                        className={`block h-1 w-8 rounded transition-all duration-300 ${
+                            openNav
+                                ? "rotate-45 translate-y-3 bg-white"
+                                : "bg-black dark:bg-white"
+                        }`}
                     ></span>
                     <span
-                        className={`block h-1 w-8 rounded bg-white transition-opacity duration-300 ${openNav ? "opacity-0" : "opacity-100"
-                            }`}
+                        className={`block h-1 w-8 rounded transition-all duration-300 ${
+                            openNav
+                                ? "opacity-0 bg-white"
+                                : "opacity-100 bg-black dark:bg-white"
+                        }`}
                     ></span>
                     <span
-                        className={`block h-1 w-8 rounded bg-white transition-transform duration-300 ${openNav ? "-rotate-45 -translate-y-3" : ""
-                            }`}
+                        className={`block h-1 w-8 rounded transition-all duration-300 ${
+                            openNav
+                                ? "-rotate-45 -translate-y-3 bg-white"
+                                : "bg-black dark:bg-white"
+                        }`}
                     ></span>
                 </button>
 
-                {/* Mobile Menu */}
-                {openNav && (
-                    <div className="absolute top-full left-0 w-full flex flex-col items-center md:hidden bg-background">
+                {/* Mobile Menu - Full Screen Overlay */}
+                <div
+                    id="mobile-menu"
+                    className={`fixed inset-0 z-30 md:hidden transition-all duration-300 ${
+                        openNav
+                            ? "opacity-100 visible"
+                            : "opacity-0 invisible pointer-events-none"
+                    }`}
+                    aria-hidden={!openNav}
+                >
+                    {/* Backdrop */}
+                    <div
+                        className="absolute inset-0 bg-black/60 backdrop-blur-md"
+                        onClick={() => setOpenNav(false)}
+                        aria-hidden="true"
+                    />
+
+                    {/* Menu Content */}
+                    <div className={`relative h-full flex flex-col items-center justify-center gap-8 transition-transform duration-300 ${
+                        openNav ? "translate-y-0" : "-translate-y-10"
+                    }`}>
                         <a
-                            href="about"
-                            className="w-full text-center py-4 text-white hover:text-yellow-500 transition-colors"
+                            href="/about"
+                            className={`text-3xl font-bold transition-colors uppercase tracking-wide ${
+                                isActive("/about") ? "text-yellow-400" : "text-white hover:text-yellow-400"
+                            }`}
                             onClick={() => setOpenNav(false)}
+                            aria-current={isActive("/about") ? "page" : undefined}
                         >
                             About
                         </a>
                         <a
-                            href="contact"
-                            className="w-full text-center py-4 text-white hover:text-yellow-500 transition-colors"
+                            href="/contact"
+                            className={`text-3xl font-bold transition-colors uppercase tracking-wide ${
+                                isActive("/contact") ? "text-yellow-400" : "text-white hover:text-yellow-400"
+                            }`}
                             onClick={() => setOpenNav(false)}
+                            aria-current={isActive("/contact") ? "page" : undefined}
                         >
                             Contact
                         </a>
                         <a
-                            href=""
-                            className="w-full text-center py-4 text-yellow-500 hover:text-yellow-400 transition-colors"
+                            href={RESUME_URL}
+                            className="text-3xl font-bold text-yellow-400 hover:text-yellow-300 transition-colors uppercase tracking-wide"
                             onClick={() => setOpenNav(false)}
                         >
                             Resume
                         </a>
-                        <div className="py-4">
-                            <Clock />
+
+                        <div className="mt-8 flex flex-col items-center gap-6">
+                            <div className="text-white/80 text-lg">
+                                <Clock />
+                            </div>
+                            <ThemeToggle />
                         </div>
                     </div>
-                )}
+                </div>
             </nav>
         </header>
     );
