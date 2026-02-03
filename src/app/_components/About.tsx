@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
+import Link from "next/link";
 import { EXPERIENCE_YEARS, HOME_LOCATION, PLAYLIST_ID, RESUME_URL } from "../configs/config";
 
 export default function About() {
@@ -9,11 +10,11 @@ export default function About() {
     const [shouldLoad, setShouldLoad] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    const close = () => {
+    const close = useCallback(() => {
         setIsLoaded(false);
         setShouldLoad(false);
         document.body.style.overflow = "";
-    };
+    }, []);
 
 
 
@@ -35,14 +36,14 @@ export default function About() {
                     , I'm a software engineer based in the <span className="font-bold text-amber-600 dark:text-[#ffb700]">{HOME_LOCATION}</span>.
                     Over the past {EXPERIENCE_YEARS} years, I've built systems that process millions in transactions, architected platforms that scale across continents, and led engineering pivots that transformed business models from the ground up.
                     From building seamless third-party integrations to modernizing legacy systems with reliable infrastructure, automated deployments, and cloud-native workflows, I thrive in the space where technical excellence meets real-world impact. I
-                    believes the best code tells a story—one where users are the heroes, and technology is the invisible force that makes their journey seamless.
+                    believe the best code tells a story—one where users are the heroes, and technology is the invisible force that makes their journey seamless.
                 </p>
 
                 <p className="py-4 text-sm sm:text-base md:text-lg leading-relaxed">
                     My journey started with civil engineering (B.Sc , <span className="font-bold text-amber-600 dark:text-[#ffb700]">M.Sc (Distinction))</span>—building physical infrastructure—before I discovered I could build digital worlds instead.
                     That foundation in engineering principles still shapes how I approach software: with precision, scalability, and an unwavering focus on reliability.
                     I recently completed my <span className="font-bold text-amber-600 dark:text-[#ffb700]">Master's in Artificial Intelligence and Data Science</span> at <span className="font-bold">The University of Hull</span> with <span className="font-bold text-amber-600 dark:text-[#ffb700]">Distinction</span>, deepening my expertise in machine learning, data analysis, and intelligent systems that push the boundaries of what's possible.
-                    You can check out my resume <a href={RESUME_URL} className="text-amber-500 underline">here</a>.
+                    You can check out my resume <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className="text-amber-500 underline">here</a>.
                 </p>
 
 
@@ -62,19 +63,8 @@ export default function About() {
                 </p>
 
 
+                {/* Modal with single iframe */}
                 {shouldLoad && (
-                    <iframe
-                        className="hidden"
-                        src={`https://www.youtube.com/embed/playlist?list=${PLAYLIST_ID}`}
-                        allow="encrypted-media"
-                        onLoad={() => {
-                            setIsLoaded(true);
-                            document.body.style.overflow = "hidden";
-                        }}
-                    />
-                )}
-                {/* Modal — only after iframe loaded */}
-                {isLoaded && (
                     <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
                         <div className="relative w-full max-w-3xl animate-[fadeIn_0.3s_ease-out]">
                             <button
@@ -84,11 +74,18 @@ export default function About() {
                                 Close ✕
                             </button>
 
+                            {!isLoaded && (
+                                <div className="w-full aspect-video rounded-xl border border-white/10 bg-gray-900 flex items-center justify-center">
+                                    <span className="h-8 w-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                </div>
+                            )}
+
                             <iframe
-                                className="w-full aspect-video rounded-xl border border-white/10"
+                                className={`w-full aspect-video rounded-xl border border-white/10 ${!isLoaded ? 'hidden' : ''}`}
                                 src={`https://www.youtube.com/embed/playlist?list=${PLAYLIST_ID}`}
                                 allow="encrypted-media"
                                 title="Curated Playlist"
+                                onLoad={() => setIsLoaded(true)}
                             />
                         </div>
                     </div>
@@ -160,7 +157,7 @@ export default function About() {
                 <div className="py-10">
                     <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Let's Connect</h2>
                     <p className="text-sm sm:text-base md:text-lg text-center">
-                        Let's connect and build something amazing together! <a href="contact" className="text-amber-500 underline">Contact Me</a>
+                        Let's connect and build something amazing together! <Link href="/contact" className="text-amber-500 underline">Contact Me</Link>
                     </p>
                 </div>
             </div>

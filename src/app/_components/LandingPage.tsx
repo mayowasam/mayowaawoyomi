@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -13,13 +14,13 @@ export default function LandingPage() {
     () => {
       const tl = gsap.timeline();
 
-      // 1️⃣ IMAGE SCALE & FADE AFTER 10s
+      // Image scale & fade animation
       tl.to(".img-container", {
         scale: 5,
         opacity: 0,
         duration: 3,
         ease: "power2.inOut",
-        delay: 2, // wait 10s before starting
+        delay: 2, // Wait 2s before starting
       });
 
       // 2️⃣ HERO TEXT FADE-IN AFTER IMAGE
@@ -86,7 +87,7 @@ export default function LandingPage() {
       </div>
 
       {/* Dark overlay for better text visibility */}
-      <div className="absolute inset-0 bg-black/40 z-[15] pointer-events-none" />
+      <div className="absolute inset-0 bg-black/40 z-15 pointer-events-none" />
 
       {/* HERO TEXT */}
       <div
@@ -107,9 +108,9 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <a href="about" className="text-white right-side md:ml-auto text-base sm:text-lg mt-8 sm:mt-12 md:mt-0 hover:text-yellow-400 transition-colors drop-shadow-lg">
+        <Link href="/about" className="text-white right-side md:ml-auto text-base sm:text-lg mt-8 sm:mt-12 md:mt-0 hover:text-yellow-400 transition-colors drop-shadow-lg">
           More About Me →
-        </a>
+        </Link>
       </div>
     </section>
   );

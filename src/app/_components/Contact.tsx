@@ -33,10 +33,10 @@ export default function Contact() {
           <a href={`tel:${PHONE_NUMBER}`} className={buttonStyles}>
             Call Me
           </a>
-          <a href={LINKEDIN_URL} className={buttonStyles}>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className={buttonStyles}>
             LinkedIn
           </a>
-          <a href={GITHUB_URL} className={buttonStyles}>
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className={buttonStyles}>
             GitHub
           </a>
         </div>

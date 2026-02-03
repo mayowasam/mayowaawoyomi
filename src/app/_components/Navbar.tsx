@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Clock from "./Clock";
 import { RESUME_URL } from "../configs/config";
 import { ThemeToggle } from "./ThemeToggle";
@@ -31,7 +32,7 @@ export default function Navbar() {
                 aria-label="Main navigation"
             >
                 {/* Logo */}
-                <a href="/" className="flex items-center" aria-label="Mayowa Awoyomi - Home">
+                <Link href="/" className="flex items-center" aria-label="Mayowa Awoyomi - Home">
                     <svg
                         width="50"
                         height="30"
@@ -62,27 +63,27 @@ export default function Navbar() {
                         />
 
                     </svg>
-                </a>
+                </Link>
 
                 {/* Desktop Menu */}
                 <ul className="hidden md:flex gap-10 uppercase font-bold text-lg text-black dark:text-white items-center">
                     <li>
-                        <a
+                        <Link
                             href="/about"
                             className={`transition-colors ${isActive("/about") ? "text-yellow-500" : "hover:text-yellow-500"}`}
                             aria-current={isActive("/about") ? "page" : undefined}
                         >
                             About
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href="/contact"
                             className={`transition-colors ${isActive("/contact") ? "text-yellow-500" : "hover:text-yellow-500"}`}
                             aria-current={isActive("/contact") ? "page" : undefined}
                         >
                             Contact
-                        </a>
+                        </Link>
                     </li>
                     <li>
                         <Clock />
@@ -95,6 +96,8 @@ export default function Navbar() {
                 {/* Resume Button */}
                 <a
                     href={RESUME_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hidden md:flex uppercase font-semibold text-yellow-500 text-lg hover:text-yellow-400 transition-colors"
                 >
                     Resume
@@ -152,7 +155,7 @@ export default function Navbar() {
                     <div className={`relative h-full flex flex-col items-center justify-center gap-8 transition-transform duration-300 ${
                         openNav ? "translate-y-0" : "-translate-y-10"
                     }`}>
-                        <a
+                        <Link
                             href="/about"
                             className={`text-3xl font-bold transition-colors uppercase tracking-wide ${
                                 isActive("/about") ? "text-yellow-400" : "text-white hover:text-yellow-400"
@@ -161,8 +164,8 @@ export default function Navbar() {
                             aria-current={isActive("/about") ? "page" : undefined}
                         >
                             About
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             href="/contact"
                             className={`text-3xl font-bold transition-colors uppercase tracking-wide ${
                                 isActive("/contact") ? "text-yellow-400" : "text-white hover:text-yellow-400"
@@ -171,9 +174,11 @@ export default function Navbar() {
                             aria-current={isActive("/contact") ? "page" : undefined}
                         >
                             Contact
-                        </a>
+                        </Link>
                         <a
                             href={RESUME_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="text-3xl font-bold text-yellow-400 hover:text-yellow-300 transition-colors uppercase tracking-wide"
                             onClick={() => setOpenNav(false)}
                         >
